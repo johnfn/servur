@@ -29,9 +29,9 @@ app.get('/db', function (request, response) {
 
 app.post('/save', function(req, res) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    var upsert  = "UPDATE json_table SET json='" + JSON.stringify(req.body) + "' WHERE id=1;" +
+    var upsert  = "UPDATE json_table SET json='" + (req.body) + "' WHERE id=1;" +
                   "INSERT INTO json_table (id, json)" +
-                  "SELECT 1, '" + JSON.stringify(req.body) + "'" +
+                  "SELECT 1, '" + (req.body) + "'" +
                   "WHERE NOT EXISTS (SELECT 1 FROM json_table WHERE id = 1);";
 
     client.query(upsert, function(err, result) {
