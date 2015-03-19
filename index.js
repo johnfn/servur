@@ -21,7 +21,7 @@ app.get('/db', function (request, response) {
         console.error(err);
         response.send("Error " + err);
       } else {
-        response.send(result.rows);
+        response.send(result.rows[0].json);
       }
     });
   });
