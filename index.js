@@ -36,11 +36,13 @@ app.post('/save', function(req, res) {
                  "SELECT 1, $1" +
                  "WHERE NOT EXISTS (SELECT 1 FROM json_table WHERE id = 1);";
 
-    client.query(update, data, function(err, result) {
+    client.query(update, [data], function(err, result) {
       if (err) console.log(err);
 
-      client.query(insert, data, function(err, result) {
+      client.query(insert, [data], function(err, result) {
         if (err) console.log(err);
+
+        console.log('saved new data');
 
         done();
 
