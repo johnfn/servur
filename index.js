@@ -29,19 +29,23 @@ app.get('/db', function (request, response) {
 
 app.post('/save', function(req, res) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    var upsert  = "UPDATE json_table SET json='" + JSON.stringify(req.body) + "' WHERE id=1;" +
-                  "INSERT INTO json_table (id, json)" +
-                  "SELECT 1, '" + JSON.stringify(req.body) + "'" +
-                  "WHERE NOT EXISTS (SELECT 1 FROM json_table WHERE id = 1);";
+    var data = JSON.stringify(req.body);
 
-    client.query(upsert, function(err, result) {
-      if (err) {
-        console.log(err);
-      }
+    var update = "UPDATE json_table SET json = $1 WHERE id=1;";
+    var insert = "INSERT INTO json_table (id, json)" +
+                 "SELECT 1, $1" +
+                 "WHERE NOT EXISTS (SELECT 1 FROM json_table WHERE id = 1);";
 
-      done();
+    client.query(update, data, function(err, result) {
+      if (err) console.log(err);
 
-      res.send("lol");
+      client.query(insert, data, function(err, result) {
+        if (err) console.log(err);
+
+        done();
+
+        res.send("lol");
+      });
     });
   });
 });
