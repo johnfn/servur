@@ -1,12 +1,13 @@
 var express = require('express');
 var app = express();
 var pg = require('pg');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var cors = require('cors');
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
-
+app.use(cors());
 
 app.get('/', function(request, response) {
   response.send('Hello World!');
@@ -25,7 +26,7 @@ app.get('/db', function (request, response) {
       }
     });
   });
-})
+});
 
 app.post('/save', function(req, res) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
