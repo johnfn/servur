@@ -7,7 +7,7 @@ gem install foreman
 npm install
 Download and install postgress.app
 Open it up
-create table json_table ( json text );
+create table json_table ( json text, id integer );
 ```
 
 every time:
