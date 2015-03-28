@@ -21,6 +21,14 @@ app.get('/db', function (request, response) {
       if (err) {
         console.error(err);
         response.send("Error " + err);
+        return;
+      } 
+
+      if (result.rows.length == 0) {
+        // Just return an empty todo list.
+        response.send('{"name":"Base","content":"","done":false,"isHeader":false,"createdDate":"Sat Mar 28 2015 11:33:07 GMT-0700 (Pacific Daylight Time)","modifiedDate":"Sat Mar 28 2015 11:33:07 GMT-0700 (Pacific Daylight Time)","archivalDate":"","archived":false,"starred":false,"tags":[],"children":['+ 
+          '{"name":"Base","content":"","done":false,"isHeader":false,"createdDate":"Sat Mar 28 2015 11:33:07 GMT-0700 (Pacific Daylight Time)","modifiedDate":"Sat Mar 28 2015 11:33:07 GMT-0700 (Pacific Daylight Time)","archivalDate":"","archived":false,"starred":false,"tags":[],"children":[]}' +
+        ']}');
       } else {
         response.send(result.rows[0].json);
       }
